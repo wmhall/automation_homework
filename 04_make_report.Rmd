@@ -1,0 +1,53 @@
+---
+title: "stat545_hw09_report"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This report is the end product of a pipeline that I developed for homework 9 in stat545. 
+
+My pipeline started from the raw gapminder data:
+
+```{r}
+gapminder_raw <- read.delim("gapminder.tsv")
+str(gapminder_raw)
+```
+
+The pipeline has three primary outputs:
+
+1) Regression models examining the relationship between year and lifeExp for each continent. 
+
+2) Continents ranked by average increase per year in life expectancy.
+
+3) A plot of relationship between year and life expectancy.
+
+###1) A regression model
+
+The output from the regression model can be found in the file called "linear_model_year_predicting_lifeExp.tsv". A model was estimated for each continent with year centered at 1952 to make the intercept represent mean lifeExp for a given continent in 1952. Note that Oceania was dropped from the analyses during the initial data cleaning. 
+
+```{r}
+lm_model_gapminder <-
+	read.table("linear_model_year_predicting_lifeExp.tsv")
+knitr::kable(lm_model_gapminder) 
+```
+
+###2) Continents ranked by life expectancy.
+
+A table of the continents ranked by their average increase in lifeExp can be found in the file "rank_continent_by_increase_in_lifeExp.tsv". In this file you will also find the estimated mean life expectancy in 1952 and 2007 for each continent. Furthermore, an effect size (adjusted r.squared) is provided for each continent to provide an index of the size of the relationship between year and life expectancy.
+
+```{r}
+lifeExp_rankings <- read.table("rank_continent_by_increase_in_lifeExp.tsv", header = TRUE)
+knitr::kable(lifeExp_rankings) 
+```
+
+
+###3) A plot of relationship between year and life expectancy
+
+Finally, a plot is generated that visualizes the relationship between year and life expectancy for each continent. The points on the plot are scaled by the value and adjusted r.squared to give the reader a sense of the effect size for the plotted relationships. 
+
+![*Fig. 1* A  plot of the relationship between life expectancy and year](plot_for_average_increase_in_lifeExp_per_year.png)
+
+
